@@ -1,1089 +1,899 @@
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>대입 RPG 전략 코치</title>
+  <title>고교학점제·대입 컨설팅 종합 자료</title>
   <style>
     :root{
-      --bg:#07111f;
-      --panel:#0d1830;
-      --panel-2:#121f3f;
-      --line:#223663;
-      --text:#eef4ff;
-      --muted:#9eb0d1;
-      --good:#37d67a;
-      --warn:#ffb020;
-      --bad:#ff5a6f;
-      --blue:#5aa9ff;
-      --purple:#a970ff;
-      --green:#3cd39f;
-      --red:#ff6a6a;
-      --gold:#ffcd4d;
-      --pink:#ff73c8;
-      --shadow:0 12px 32px rgba(0,0,0,.28);
-      --radius:18px;
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --line:#d9e0ea;
+      --text:#102033;
+      --muted:#5b6b7e;
+      --primary:#1f4fa3;
+      --primary-soft:#eaf2ff;
+      --green:#0e7a54;
+      --green-soft:#e9f7f1;
+      --orange:#b86a00;
+      --orange-soft:#fff4e7;
+      --red:#b02a37;
+      --red-soft:#fff0f1;
+      --shadow:0 10px 30px rgba(16,32,51,.08);
+      --radius:16px;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:linear-gradient(180deg,#050b16 0%, #081223 45%, #07111f 100%);color:var(--text);font-family: "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif}
-    body{min-height:100vh}
-    .stars::before,.stars::after{
-      content:"";
-      position:fixed;inset:0;pointer-events:none;z-index:0;
-      background-image:
-        radial-gradient(circle at 10% 20%, rgba(255,255,255,.5) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 80% 30%, rgba(255,255,255,.35) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 30% 70%, rgba(255,255,255,.35) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 65% 80%, rgba(255,255,255,.28) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 90% 10%, rgba(255,255,255,.18) 0 1px, transparent 1.5px);
-      opacity:.4;
-      animation: twinkle 4s linear infinite;
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;
+      line-height:1.6;
     }
-    .stars::after{animation-duration:7s; opacity:.22}
-    @keyframes twinkle{50%{opacity:.15}}
-    .wrap{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:24px 16px 64px}
-    .header{
-      display:grid;grid-template-columns:1.3fr .7fr;gap:18px;margin-bottom:18px
+    .wrap{
+      max-width:1280px;
+      margin:0 auto;
+      padding:24px 16px 80px;
     }
+    .hero{
+      background:linear-gradient(135deg,#0f2a57 0%,#1f4fa3 60%,#4d7ed6 100%);
+      color:#fff;
+      border-radius:24px;
+      padding:32px 28px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+    }
+    .hero h1{
+      margin:0 0 10px;
+      font-size:32px;
+      line-height:1.25;
+      letter-spacing:-0.03em;
+    }
+    .hero p{
+      margin:0;
+      font-size:15px;
+      color:rgba(255,255,255,.9);
+    }
+    .topbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:16px 0 22px;
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:rgba(245,247,251,.92);
+      padding:10px 0;
+      backdrop-filter: blur(8px);
+    }
+    .btn{
+      appearance:none;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:14px;
+    }
+    .btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+    .btn:hover{transform:translateY(-1px)}
+    .grid{
+      display:grid;
+      gap:16px;
+    }
+    .grid.cols-4{grid-template-columns:repeat(4,1fr)}
+    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    .grid.cols-2{grid-template-columns:repeat(2,1fr)}
     .card{
-      background:linear-gradient(180deg, rgba(18,31,63,.96), rgba(10,22,46,.96));
+      background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
+      padding:20px;
     }
-    .hero{padding:26px}
-    .eyebrow{
-      display:inline-flex;gap:8px;align-items:center;
-      color:#8ab6ff;background:rgba(90,169,255,.10);border:1px solid rgba(90,169,255,.24);
-      border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;letter-spacing:.02em
-    }
-    h1{font-size:34px;line-height:1.25;margin:14px 0 10px}
-    .desc{color:var(--muted);font-size:15px;line-height:1.7}
-    .hero-note{
-      margin-top:16px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);color:#cad7f1;font-size:14px;line-height:1.7
-    }
-    .header-side{padding:20px}
-    .summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .mini{
-      padding:16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)
-    }
-    .mini .k{font-size:12px;color:#8ea3c8;margin-bottom:8px}
-    .mini .v{font-size:26px;font-weight:800}
-    .mini .s{font-size:12px;color:#cdd8ed;margin-top:6px;line-height:1.55}
-    .controls{
-      display:grid;grid-template-columns: 1fr 1fr;gap:18px;margin-bottom:18px
-    }
-    .control-box{padding:18px}
-    .control-title{font-size:14px;font-weight:800;margin-bottom:12px;color:#dce8ff}
-    .pill-row,.track-row,.tab-row,.preset-row{display:flex;flex-wrap:wrap;gap:10px}
-    button, select, input[type=range] {font:inherit}
-    .pill,.track-btn,.tab-btn,.preset-btn{
-      border:1px solid var(--line);background:#0b1730;color:#cfe0ff;padding:11px 14px;border-radius:14px;
-      cursor:pointer;transition:.18s ease;box-shadow:none
-    }
-    .pill.active,.track-btn.active,.tab-btn.active,.preset-btn.active{
-      background:rgba(90,169,255,.15);border-color:rgba(90,169,255,.45);color:#fff;transform:translateY(-1px)
-    }
-    .pill:hover,.track-btn:hover,.tab-btn:hover,.preset-btn:hover{filter:brightness(1.08)}
-    .track-btn{padding:14px 16px;text-align:left;min-width:180px}
-    .track-btn small{display:block;color:#9fb2d8;margin-top:6px;font-size:12px}
-    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
-    .score-card{padding:18px}
-    .score-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}
-    .score-name{font-size:13px;color:#aabde2;font-weight:700}
-    .score-value{font-size:28px;font-weight:900}
-    .bar{
-      height:12px;background:#0a1428;border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.06)
-    }
-    .bar > span{
-      display:block;height:100%;border-radius:999px;
-      background:linear-gradient(90deg, rgba(255,255,255,.15), rgba(255,255,255,.02));
-      position:relative
-    }
-    .bar > span::after{
-      content:"";position:absolute;inset:0;background:linear-gradient(90deg, currentColor, rgba(255,255,255,.6));
-      opacity:.95
-    }
-    .score-tip{margin-top:10px;font-size:13px;color:#cad7f1;line-height:1.6}
-    .main{
-      display:grid;grid-template-columns:420px 1fr;gap:18px
-    }
-    .left-col,.right-col{display:flex;flex-direction:column;gap:18px}
-    .section-card{padding:20px}
     .section-title{
-      display:flex;align-items:center;justify-content:space-between;gap:8px;
-      margin-bottom:16px
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-0.03em;
+      margin:36px 0 14px;
     }
-    .section-title h2{font-size:18px;margin:0}
-    .sub{font-size:12px;color:#9fb2d8}
-    .diag-grid{display:grid;grid-template-columns:1fr;gap:14px}
-    .range-item{
-      padding:14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)
+    .sub{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:-6px;
+      margin-bottom:14px;
     }
-    .range-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
-    .range-label{font-size:14px;font-weight:700}
-    .range-val{font-size:13px;color:#9fd3ff;font-weight:800}
-    .range-help{margin-top:8px;color:#95aacd;font-size:12px;line-height:1.6}
-    input[type=range]{width:100%;accent-color:var(--blue)}
-    .grade-select{
-      width:100%;padding:12px 14px;border-radius:14px;background:#0b1730;color:#eaf2ff;border:1px solid var(--line)
+    .kpi{
+      padding:18px;
+      border-radius:16px;
+      border:1px solid var(--line);
     }
-    .feedback-list,.quest-list,.bullet-list,.insight-list{display:grid;gap:12px}
-    .feedback-item,.quest-item,.bullet-item,.insight-item{
-      padding:14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)
+    .kpi .num{
+      font-size:28px;
+      font-weight:800;
+      margin-bottom:4px;
+      letter-spacing:-0.03em;
     }
-    .feedback-item strong,.bullet-item strong,.quest-item strong,.insight-item strong{display:block;margin-bottom:8px}
-    .feedback-item p,.bullet-item p,.quest-item p,.insight-item p{
-      margin:0;color:#cdd8ed;font-size:14px;line-height:1.7
+    .kpi .lab{
+      font-size:13px;
+      color:var(--muted);
+      font-weight:700;
     }
-    .status{
-      display:inline-flex;align-items:center;gap:8px;font-size:12px;border-radius:999px;padding:7px 10px;
-      background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      font-weight:700;
+      border:1px solid transparent;
+      margin-right:6px;
+      margin-bottom:6px;
     }
-    .tabs{margin-bottom:16px}
-    .panel h3{margin:0 0 12px;font-size:20px}
-    .hero-track{
-      display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-bottom:16px
+    .badge.blue{background:var(--primary-soft);color:var(--primary);border-color:#cfe0ff}
+    .badge.green{background:var(--green-soft);color:var(--green);border-color:#cde9de}
+    .badge.orange{background:var(--orange-soft);color:var(--orange);border-color:#ffe0b8}
+    .badge.red{background:var(--red-soft);color:var(--red);border-color:#ffd0d5}
+    .list{
+      margin:0;
+      padding-left:18px;
     }
-    .expert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-    .expert-box{
-      padding:16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)
+    .list li{margin:6px 0}
+    .small{font-size:13px;color:var(--muted)}
+    .muted{color:var(--muted)}
+    .pillbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:10px 0 4px;
     }
-    .expert-box h4{margin:0 0 12px;font-size:15px}
-    .expert-box ul{margin:0;padding-left:18px;color:#d9e5fb}
-    .expert-box li{line-height:1.8;margin-bottom:6px}
-    .timeline{display:grid;gap:12px}
-    .time-item{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:flex-start}
-    .time-badge{
-      display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border-radius:12px;
-      background:rgba(90,169,255,.12);border:1px solid rgba(90,169,255,.3);font-weight:800
+    .pill{
+      background:#f2f5fa;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:12px;
+      font-weight:700;
+      color:#334459;
     }
-    .tag-row{display:flex;flex-wrap:wrap;gap:8px}
-    .tag{
-      display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;
-      background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:12px
+    .callout{
+      border-left:4px solid var(--primary);
+      background:#f8fbff;
+      padding:14px 16px;
+      border-radius:12px;
+      margin:10px 0;
+      color:#26415d;
     }
-    .quests-summary{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px
+    details{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      padding:14px 16px;
     }
-    .reward{
-      font-weight:900;color:#ffd968
+    details + details{margin-top:10px}
+    summary{
+      cursor:pointer;
+      font-weight:800;
+      list-style:none;
     }
-    .footer-note{
-      margin-top:18px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.03);
-      border:1px dashed rgba(255,255,255,.12);font-size:13px;line-height:1.7;color:#b8c8e6
+    summary::-webkit-details-marker{display:none}
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:#fff;
+      border-radius:16px;
+      overflow:hidden;
     }
-    .badge-grid{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:12px
+    th,td{
+      padding:12px 10px;
+      border-bottom:1px solid #e8edf4;
+      text-align:left;
+      font-size:13px;
+      vertical-align:top;
     }
-    .badge-card{
-      padding:14px;border-radius:16px;text-align:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)
+    th{
+      background:#f3f7fc;
+      color:#234160;
+      position:sticky;
+      top:58px;
+      z-index:1;
     }
-    .badge-card.locked{opacity:.48;filter:saturate(.4)}
-    .badge-icon{font-size:24px;margin-bottom:8px}
-    .badge-name{font-size:13px;font-weight:800;margin-bottom:6px}
-    .badge-desc{font-size:12px;color:#a9bbdd;line-height:1.55}
-    .emphasis{color:#ffd968;font-weight:800}
-    .muted{color:#94a7cc}
-    .small{font-size:12px}
-    .color-blue{color:#7fc3ff}
-    .color-green{color:#67e6b6}
-    .color-purple{color:#cb9eff}
-    .color-red{color:#ff9f9f}
-    .color-gold{color:#ffd968}
-    .rank{
-      display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;padding:9px 12px;
-      border-radius:999px;background:rgba(255,205,77,.12);border:1px solid rgba(255,205,77,.34);color:#ffe79c
+    .table-wrap{
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:auto;
+      box-shadow:var(--shadow);
+      background:#fff;
+      max-height:680px;
     }
-    .notice{
-      display:grid;grid-template-columns:1fr 1fr;gap:12px
+    .filters{
+      display:grid;
+      grid-template-columns:1.2fr 1fr 1fr 1fr;
+      gap:10px;
+      margin-bottom:14px;
     }
-    @media (max-width: 1100px){
-      .header,.controls,.main,.hero-track{grid-template-columns:1fr}
-      .stats-grid{grid-template-columns:repeat(2,1fr)}
-      .badge-grid,.expert-grid,.quests-summary,.notice{grid-template-columns:1fr}
+    input,select,textarea{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:11px 12px;
+      font:inherit;
+      background:#fff;
+      color:var(--text);
     }
-    @media (max-width: 720px){
-      .wrap{padding:14px 12px 40px}
-      h1{font-size:26px}
-      .summary-grid,.stats-grid{grid-template-columns:1fr}
-      .time-item{grid-template-columns:1fr}
-      .track-btn{min-width:auto;width:100%}
+    textarea{min-height:110px;resize:vertical}
+    .result-box{
+      background:#fbfdff;
+      border:1px solid #dce8fb;
+      border-radius:16px;
+      padding:18px;
+    }
+    .two-col{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:16px;
+    }
+    .group-card{
+      padding:18px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+    .group-card h3{
+      margin:0 0 8px;
+      font-size:18px;
+    }
+    .group-card p{
+      margin:0 0 10px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .foot{
+      margin-top:26px;
+      color:#54657a;
+      font-size:12px;
+      line-height:1.7;
+    }
+    .print-only{display:none}
+    .hide-print{}
+    @media (max-width:1100px){
+      .grid.cols-4,.grid.cols-3,.grid.cols-2,.two-col,.filters{grid-template-columns:1fr}
+      th{top:0}
+    }
+    @media print{
+      body{background:#fff}
+      .wrap{max-width:none;padding:0}
+      .hero,.card,.table-wrap,.group-card{box-shadow:none}
+      .topbar,.hide-print{display:none !important}
+      .print-only{display:block}
+      .section-title{page-break-after:avoid}
+      .card,.group-card,details,.table-wrap{break-inside:avoid}
+      th{position:static}
+      a{text-decoration:none;color:inherit}
     }
   </style>
 </head>
 <body>
-<div class="stars"></div>
-<div class="wrap">
-  <div class="header">
-    <div class="card hero">
-      <div class="eyebrow">🎮 전문가형 대입 전략 + 학교생활 피드백 + RPG 성장 시스템</div>
-      <h1>대입 RPG 전략 코치</h1>
-      <div class="desc">
-        전형 이해, 학생부 진단, 수능/논술 경쟁력, 학교생활 피드백, 주간 퀘스트를
-        한 화면에서 정리하는 <strong>단일 HTML 실행형</strong> 도구입니다.
-      </div>
-      <div class="hero-note">
-        이 페이지는 <strong>전형 설계 프레임</strong>을 잡아 주는 도구입니다.<br>
-        실제 지원 대학 결정은 반드시 해당 대학 <strong>모집요강·전년도 결과·수능최저·면접/논술 방식</strong>까지 확인해서 마무리해야 합니다.
-      </div>
+  <div class="wrap">
+    <div class="hero">
+      <div class="badge blue" style="background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.25);color:#fff">컨설팅 실무용</div>
+      <div class="badge green" style="background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.25);color:#fff">고교학점제 중심</div>
+      <div class="badge orange" style="background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.25);color:#fff">작년 입결 표본 포함</div>
+      <h1>고교학점제·대입 컨설팅 종합 자료</h1>
+      <p>학생 상담용 설명 자료가 아니라, 상담사가 학생의 과목 선택·학생부·전형 방향을 한 번에 구조화하기 위한 실무형 HTML 문서입니다. 대학군별 해석, 전형별 상담 프레임, 2025학년도 공개결과 표본, 상담 메모 템플릿을 한 파일 안에 넣었습니다.</p>
     </div>
-    <div class="card header-side">
-      <div class="section-title">
-        <h2>현재 캐릭터 상태</h2>
-        <span id="rankBadge" class="rank">Lv.1 새내기 모험가</span>
-      </div>
-      <div class="summary-grid">
-        <div class="mini">
-          <div class="k">선택 전형</div>
-          <div class="v" id="miniTrack">학생부종합</div>
-          <div class="s" id="miniTrackText">학교생활의 질과 서류 해석력이 중요한 유형</div>
-        </div>
-        <div class="mini">
-          <div class="k">학년</div>
-          <div class="v" id="miniGrade">고2</div>
-          <div class="s">지금 단계에서 해야 할 일 중심으로 전략 표시</div>
-        </div>
-        <div class="mini">
-          <div class="k">누적 EXP</div>
-          <div class="v" id="miniExp">0</div>
-          <div class="s">입력값에 따라 레벨·배지가 자동 갱신됩니다.</div>
-        </div>
-        <div class="mini">
-          <div class="k">핵심 과제</div>
-          <div class="v" id="miniFocus">세특</div>
-          <div class="s" id="miniFocusText">현재 가장 먼저 손봐야 할 약점 영역</div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="controls">
-    <div class="card control-box">
-      <div class="control-title">1) 학년 선택</div>
-      <select id="gradeSelect" class="grade-select">
-        <option value="중3">중3</option>
-        <option value="고1">고1</option>
-        <option value="고2" selected>고2</option>
-        <option value="고3">고3</option>
-        <option value="N수">N수</option>
-      </select>
-      <div class="footer-note" style="margin-top:12px">
-        <strong>해석 기준</strong><br>
-        중3·고1은 기초 체력과 과목 선택 방향, 고2는 전형 확정과 증거 축적, 고3은 지원 조합·실전 점검 비중이 커지도록 설계했습니다.
+    <div class="topbar hide-print">
+      <button class="btn" onclick="scrollToId('summary')">요약</button>
+      <button class="btn" onclick="scrollToId('credit')">고교학점제 전략</button>
+      <button class="btn" onclick="scrollToId('groups')">대학군 분석</button>
+      <button class="btn" onclick="scrollToId('benchmark')">작년 전형별 컷 표본</button>
+      <button class="btn" onclick="scrollToId('consulting')">상담 시뮬레이터</button>
+      <button class="btn" onclick="scrollToId('checklist')">체크리스트</button>
+      <button class="btn primary" onclick="window.print()">인쇄</button>
+    </div>
+
+    <div id="summary" class="section-title">1. 실무 요약</div>
+    <div class="sub">상담 현장에서 가장 먼저 확인해야 하는 기준을 짧게 정리했습니다.</div>
+
+    <div class="grid cols-4">
+      <div class="kpi card" style="background:#f8fbff">
+        <div class="num">2025</div>
+        <div class="lab">일반계고 고교학점제 전면 적용 시작 학년도</div>
+      </div>
+      <div class="kpi card" style="background:#f7fcfa">
+        <div class="num">2028</div>
+        <div class="lab">현 고1 적용 대입 개편 체제</div>
+      </div>
+      <div class="kpi card" style="background:#fff9f2">
+        <div class="num">5등급</div>
+        <div class="lab">현 고1부터 적용되는 내신 체제</div>
+      </div>
+      <div class="kpi card" style="background:#fff7f8">
+        <div class="num">의무 반영</div>
+        <div class="lab">학교폭력 조치사항 대입 반영</div>
       </div>
     </div>
 
-    <div class="card control-box">
-      <div class="control-title">2) 목표 전형 선택</div>
-      <div id="trackButtons" class="track-row"></div>
-    </div>
-  </div>
-
-  <div class="stats-grid">
-    <div class="card score-card">
-      <div class="score-top">
-        <div>
-          <div class="score-name">전형 적합도</div>
-          <div class="score-value" id="fitScore">0</div>
-        </div>
-        <div class="status" id="fitStatus">분석 대기</div>
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="card">
+        <h3 style="margin-top:0">상담의 핵심 결론</h3>
+        <ul class="list">
+          <li>고교학점제 상담은 이제 <b>“내신 등급 관리”만으로 끝나지 않습니다.</b></li>
+          <li>학생의 성적, 과목 선택, 세특, 창체, 진로 일관성을 <b>같은 스토리</b>로 묶어야 합니다.</li>
+          <li>같은 내신이라도 과목 구성과 기록의 질이 다르면 결과가 달라질 수 있습니다.</li>
+          <li>대학별 공개자료의 <b>산출 방식이 서로 다르므로</b>, 컷을 그대로 줄세우기보다 전형 구조와 함께 해석해야 합니다.</li>
+        </ul>
       </div>
-      <div class="bar"><span id="fitBar" style="width:0%; color: var(--blue)"></span></div>
-      <div class="score-tip" id="fitTip">현재 전형에서 어느 정도 경쟁력이 있는지 보여줍니다.</div>
-    </div>
-
-    <div class="card score-card">
-      <div class="score-top">
-        <div>
-          <div class="score-name">학생부 경쟁력</div>
-          <div class="score-value" id="recordScore">0</div>
-        </div>
-        <div class="status">학교생활</div>
-      </div>
-      <div class="bar"><span id="recordBar" style="width:0%; color: var(--green)"></span></div>
-      <div class="score-tip" id="recordTip">세특, 진로 일관성, 출결, 탐구 활동을 함께 반영합니다.</div>
-    </div>
-
-    <div class="card score-card">
-      <div class="score-top">
-        <div>
-          <div class="score-name">시험 경쟁력</div>
-          <div class="score-value" id="examScore">0</div>
-        </div>
-        <div class="status">모의/수능</div>
-      </div>
-      <div class="bar"><span id="examBar" style="width:0%; color: var(--red)"></span></div>
-      <div class="score-tip" id="examTip">수능/논술형 전형에서 버틸 수 있는 실전 점수 체력입니다.</div>
-    </div>
-
-    <div class="card score-card">
-      <div class="score-top">
-        <div>
-          <div class="score-name">루틴 안정성</div>
-          <div class="score-value" id="routineScore">0</div>
-        </div>
-        <div class="status">생활 습관</div>
-      </div>
-      <div class="bar"><span id="routineBar" style="width:0%; color: var(--gold)"></span></div>
-      <div class="score-tip" id="routineTip">장기전에서 무너지지 않는 공부 지속 가능성을 뜻합니다.</div>
-    </div>
-  </div>
-
-  <div class="main">
-    <div class="left-col">
-      <div class="card section-card">
-        <div class="section-title">
-          <h2>진단 입력</h2>
-          <span class="sub">학생 상태를 숫자로 넣으면 피드백이 자동 생성됩니다.</span>
-        </div>
-        <div class="preset-row" id="presetButtons" style="margin-bottom:14px"></div>
-        <div class="diag-grid" id="diagnosisForm"></div>
-      </div>
-
-      <div class="card section-card">
-        <div class="section-title">
-          <h2>즉시 피드백</h2>
-          <span class="sub">가장 시급한 수정 포인트 3개</span>
-        </div>
-        <div id="instantFeedback" class="feedback-list"></div>
-      </div>
-
-      <div class="card section-card">
-        <div class="section-title">
-          <h2>배지 수집</h2>
-          <span class="sub">입력값이 높아질수록 업적이 해금됩니다.</span>
-        </div>
-        <div id="badgeGrid" class="badge-grid"></div>
-      </div>
-    </div>
-
-    <div class="right-col">
-      <div class="card section-card">
-        <div class="tabs">
-          <div id="tabButtons" class="tab-row"></div>
-        </div>
-        <div id="panel" class="panel"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-const TRACKS = {
-  jonghap: {
-    name: "학생부종합",
-    icon: "🧠",
-    color: "#7fc3ff",
-    short: "학교생활의 질, 전공 적합성, 성장 서사를 본다",
-    long: "교과성취도만 보지 않고 과목 선택, 세특, 탐구, 진로활동, 행동특성, 공동체성까지 함께 읽는 전형",
-    weight: { gpa: 0.18, mock: 0.10, seteuk: 0.19, attendance: 0.08, club: 0.12, major: 0.16, leadership: 0.08, writing: 0.03, interview: 0.03, routine: 0.03 },
-    mustShow: [
-      "성적이 높기만 한 학생보다 수업에서 무엇을 배우고 어떻게 확장했는지 보이는 학생이 유리합니다.",
-      "전공 관련 과목 선택, 세특의 탐구 깊이, 활동 간 연결성이 핵심입니다.",
-      "리더십은 '직책 수'보다 맡은 역할과 수행 내용이 더 중요합니다."
-    ],
-    mistakes: [
-      "스펙을 많이 넣으면 유리하다고 착각하는 것",
-      "세특을 단순 참여 기록으로 남기는 것",
-      "전공 스토리가 학년마다 바뀌는 것"
-    ],
-    evidence: ["교과 이수 흐름", "세특의 탐구 질문과 확장", "동아리·자율활동의 질", "행특과 출결의 안정성"],
-    recommended: "내신이 아주 압도적이지 않아도, 수업 참여와 탐구 활동이 탄탄하고 학교생활의 맥락이 살아 있는 학생"
-  },
-  gyogwa: {
-    name: "학생부교과",
-    icon: "📘",
-    color: "#67e6b6",
-    short: "내신 중심, 기준이 상대적으로 분명한 전형",
-    long: "교과 성적을 정량적으로 크게 반영하는 전형. 대학별로 수능최저와 면접 유무를 반드시 같이 확인해야 함",
-    weight: { gpa: 0.48, mock: 0.15, seteuk: 0.07, attendance: 0.10, club: 0.02, major: 0.04, leadership: 0.02, writing: 0.02, interview: 0.02, routine: 0.08 },
-    mustShow: [
-      "핵심은 내신 안정성입니다. 수행평가, 결시 관리, 학기별 흔들림 최소화가 중요합니다.",
-      "수능최저가 걸린 대학은 교과 + 수능 동시 관리가 필수입니다.",
-      "교과전형이라고 해서 출결·면접 리스크를 무시하면 안 됩니다."
-    ],
-    mistakes: [
-      "내신은 좋은데 수능최저를 놓치는 것",
-      "학기별 성적 변동이 큰 것",
-      "지원 대학별 반영 교과와 진로선택 반영 방식을 확인하지 않는 것"
-    ],
-    evidence: ["교과 평균과 등급 안정성", "수행평가 완성도", "출결", "수능최저 충족 가능성"],
-    recommended: "내신이 강하고, 학기 운영이 안정적이며, 대학별 반영 방식 확인을 꼼꼼히 할 수 있는 학생"
-  },
-  nonsul: {
-    name: "논술전형",
-    icon: "✍️",
-    color: "#cb9eff",
-    short: "내신 약점을 시험형 글쓰기·문제해결력으로 뒤집는 전형",
-    long: "대학별 논술 문제 스타일, 수능최저, 답안 분량과 채점 포인트가 모두 다르므로 대학별 대비가 필수인 전형",
-    weight: { gpa: 0.06, mock: 0.22, seteuk: 0.03, attendance: 0.04, club: 0.02, major: 0.05, leadership: 0.02, writing: 0.31, interview: 0.03, routine: 0.22 },
-    mustShow: [
-      "논술은 '글을 잘 쓰는 감각'이 아니라 대학별 기출 구조 적응력이 중요합니다.",
-      "수능최저 충족 가능성이 낮으면 실질 경쟁력이 급감합니다.",
-      "인문은 요약·비교·비판 구조, 자연은 개념 정확성과 풀이 논리 전개가 핵심입니다."
-    ],
-    mistakes: [
-      "기출 없이 감으로만 쓰는 것",
-      "수능최저를 뒤로 미루는 것",
-      "지원 대학 문제 스타일이 서로 다른데 한 방식만 연습하는 것"
-    ],
-    evidence: ["기출 적응도", "서술 구조", "시간 내 완성률", "수능최저 안정성"],
-    recommended: "내신보다 시험형 사고력과 글쓰기/풀이력이 강하고, 기출 반복 훈련을 견딜 수 있는 학생"
-  },
-  suneung: {
-    name: "정시·수능위주",
-    icon: "🎯",
-    color: "#ff9f9f",
-    short: "수능 실전 점수와 멘탈 유지력이 핵심인 전형",
-    long: "학교생활보다 수능 성적이 당락을 좌우하는 비중이 매우 크며, 과목별 학습량 배분과 실전 유지력이 중요함",
-    weight: { gpa: 0.01, mock: 0.56, seteuk: 0.01, attendance: 0.04, club: 0.00, major: 0.02, leadership: 0.01, writing: 0.05, interview: 0.02, routine: 0.28 },
-    mustShow: [
-      "정시는 하루 시험이 아니라 1년 동안 실전 점수 재현성을 만드는 게임입니다.",
-      "루틴이 무너지면 성적이 흔들리므로 수면, 오답 회전, 실모 운영이 중요합니다.",
-      "상위권으로 갈수록 약점 과목 제거가 핵심입니다."
-    ],
-    mistakes: [
-      "한 과목 몰빵으로 전체 표준점수 균형이 깨지는 것",
-      "실모만 많이 풀고 오답 구조를 남기지 않는 것",
-      "9월 이후에도 계획을 계속 바꾸는 것"
-    ],
-    evidence: ["모의 성적 추이", "실모 재현성", "오답 회전", "주간 루틴 지속성"],
-    recommended: "시험 점수 상승 폭이 크고, 장시간 자기주도 학습과 실전 멘탈 관리가 가능한 학생"
-  }
-};
-
-const GRADE_ROADMAP = {
-  "중3": [
-    { stage: "기초 설계", text: "고교 입학 전 과목별 약점과 강점을 정리하고, 고교에서 가져갈 진로 관심사를 2~3개로 좁히세요." },
-    { stage: "습관 만들기", text: "수학·영어의 매일 루틴을 먼저 고정하세요. 고교 입학 직후 내신 적응이 훨씬 쉬워집니다." },
-    { stage: "탐색 기록", text: "독서, 발표, 동아리 관심사를 기록해 두면 고1 세특과 진로활동 연결이 쉬워집니다." }
-  ],
-  "고1": [
-    { stage: "기초 체력", text: "고1은 학생부의 시작점입니다. 내신 하락폭이 크지 않도록 수행평가·지필·출결을 가장 먼저 안정화하세요." },
-    { stage: "과목 이해", text: "단순히 점수만 올리지 말고 어떤 과목에서 흥미와 강점이 드러나는지 보이게 하세요." },
-    { stage: "가벼운 전공 탐색", text: "동아리·독서·발표를 통해 관심 분야를 넓게 탐색하되, 학기 말에는 핵심 축을 하나 정리하세요." }
-  ],
-  "고2": [
-    { stage: "전형 확정", text: "고2는 교과/학종/논술/정시 중 주력 전형을 사실상 정해야 하는 시기입니다." },
-    { stage: "증거 축적", text: "세특, 탐구 보고서, 발표, 동아리 역할, 모의 성적 추이를 하나의 스토리로 묶으세요." },
-    { stage: "대학별 조사", text: "대학별 반영 교과, 수능최저, 면접 방식, 논술 유형을 비교해 실제 지원 가능군을 만들기 시작하세요." }
-  ],
-  "고3": [
-    { stage: "지원 조합", text: "수시 6장 조합은 상향·적정·안정으로 나누고, 정시는 수능 이후 지원 전략까지 미리 가설을 세워 두세요." },
-    { stage: "실전 대비", text: "학종은 면접, 논술은 대학별 실전, 정시는 실모와 오답 회전으로 전환해야 합니다." },
-    { stage: "리스크 제거", text: "출결, 서류 오기재 확인, 제출 서류 마감, 최저 충족 가능성 같은 실수형 리스크를 제거해야 합니다." }
-  ],
-  "N수": [
-    { stage: "재현성", text: "성적 상승보다 실전 재현성이 더 중요합니다. 하루 루틴, 주간 실모, 오답 복기 체계를 고정하세요." },
-    { stage: "전략 축소", text: "욕심내서 모든 과목을 다 건드리지 말고 성적 변동성이 큰 과목부터 정리하세요." },
-    { stage: "지원 데이터", text: "전년도 컷, 표준점수/백분위 반영 방식, 탐구 변환표준점수까지 실제 데이터로 지원군을 조정하세요." }
-  ]
-};
-
-const DIAG_FIELDS = [
-  { id:"gpa", label:"내신 등급 경쟁력", min:1, max:9, step:1, value:3, display:(v)=>`${v}등급권`, help:"1등급에 가까울수록 높게 평가합니다. 교과·학종에서 핵심 지표입니다." },
-  { id:"mock", label:"모의고사/수능 경쟁력", min:0, max:100, step:1, value:62, display:(v)=>`${v}점`, help:"정시·논술·수능최저 대응력을 뜻합니다." },
-  { id:"seteuk", label:"세특 품질", min:0, max:100, step:1, value:68, display:(v)=>`${v}점`, help:"질문-탐구-확장-성과가 보일수록 높게 잡으세요." },
-  { id:"attendance", label:"출결 안정성", min:0, max:100, step:1, value:90, display:(v)=>`${v}점`, help:"지각·조퇴·결석이 적고 학교생활 신뢰도가 높을수록 유리합니다." },
-  { id:"club", label:"동아리/자율활동 질", min:0, max:100, step:1, value:60, display:(v)=>`${v}점`, help:"활동 수보다 역할, 결과물, 지속성이 중요합니다." },
-  { id:"major", label:"진로·전공 일관성", min:0, max:100, step:1, value:65, display:(v)=>`${v}점`, help:"선택과목, 세특, 동아리, 독서가 하나의 방향으로 이어질수록 좋습니다." },
-  { id:"leadership", label:"공동체성/리더십", min:0, max:100, step:1, value:58, display:(v)=>`${v}점`, help:"직책이 아니라 맡은 역할, 협업 태도, 기여의 질을 반영하세요." },
-  { id:"writing", label:"논술·서술형 사고력", min:0, max:100, step:1, value:55, display:(v)=>`${v}점`, help:"요약, 비교, 비판, 구조화된 답안 작성 능력입니다." },
-  { id:"interview", label:"면접·발표 전달력", min:0, max:100, step:1, value:57, display:(v)=>`${v}점`, help:"답변 구조, 전달력, 전공 관심 설명력이 좋을수록 높게 잡으세요." },
-  { id:"routine", label:"루틴·자기관리", min:0, max:100, step:1, value:64, display:(v)=>`${v}점`, help:"수면, 계획 유지, 오답 복기, 공부 지속 가능성을 뜻합니다." }
-];
-
-const PRESETS = {
-  balanced: {
-    name:"균형형",
-    values:{ gpa:3, mock:62, seteuk:68, attendance:90, club:60, major:65, leadership:58, writing:55, interview:57, routine:64 }
-  },
-  jonghapStrong: {
-    name:"학종강점형",
-    values:{ gpa:3, mock:52, seteuk:86, attendance:94, club:83, major:88, leadership:79, writing:58, interview:74, routine:76 }
-  },
-  suneungStrong: {
-    name:"정시집중형",
-    values:{ gpa:5, mock:84, seteuk:42, attendance:85, club:28, major:45, leadership:40, writing:60, interview:45, routine:82 }
-  }
-};
-
-const TABS = [
-  { id:"overview", name:"전형 개요" },
-  { id:"expert", name:"전문가 가이드" },
-  { id:"feedback", name:"학교생활 피드백" },
-  { id:"quests", name:"RPG 퀘스트" }
-];
-
-const BADGES = [
-  { id:"att", icon:"🛡️", name:"출결 수호자", desc:"출결 안정성 95점 이상", unlocked:(s)=>s.attendance>=95 },
-  { id:"set", icon:"📜", name:"세특 장인", desc:"세특 품질 85점 이상", unlocked:(s)=>s.seteuk>=85 },
-  { id:"maj", icon:"🧭", name:"전공 추적자", desc:"진로 일관성 85점 이상", unlocked:(s)=>s.major>=85 },
-  { id:"lead", icon:"🤝", name:"공동체 리더", desc:"리더십 80점 이상", unlocked:(s)=>s.leadership>=80 },
-  { id:"write", icon:"✒️", name:"논증 마스터", desc:"논술·서술형 80점 이상", unlocked:(s)=>s.writing>=80 },
-  { id:"inter", icon:"🎤", name:"면접 화술가", desc:"면접·발표 80점 이상", unlocked:(s)=>s.interview>=80 },
-  { id:"exam", icon:"🎯", name:"실전 저격수", desc:"모의고사 경쟁력 85점 이상", unlocked:(s)=>s.mock>=85 },
-  { id:"routine", icon:"⏳", name:"루틴 수호자", desc:"자기관리 85점 이상", unlocked:(s)=>s.routine>=85 },
-  { id:"gpa", icon:"🏆", name:"교과 탑승권", desc:"내신 등급 경쟁력 2등급 이내", unlocked:(s)=>Number(s.gpa)<=2 }
-];
-
-const state = {
-  track: "jonghap",
-  tab: "overview",
-  grade: "고2",
-  values: PRESETS.balanced.values
-};
-
-function gpaToScore(gpa){
-  const n = Number(gpa);
-  const map = {1:100,2:90,3:78,4:64,5:50,6:38,7:26,8:14,9:6};
-  return map[n] ?? 50;
-}
-
-function clamp(v){ return Math.max(0, Math.min(100, Math.round(v))); }
-
-function getScores(){
-  const track = TRACKS[state.track];
-  const s = state.values;
-  const base = {
-    gpa: gpaToScore(s.gpa),
-    mock: Number(s.mock),
-    seteuk: Number(s.seteuk),
-    attendance: Number(s.attendance),
-    club: Number(s.club),
-    major: Number(s.major),
-    leadership: Number(s.leadership),
-    writing: Number(s.writing),
-    interview: Number(s.interview),
-    routine: Number(s.routine)
-  };
-
-  const fit = clamp(Object.entries(track.weight).reduce((sum,[k,w])=>sum + base[k] * w, 0));
-  const record = clamp(base.gpa*0.34 + base.seteuk*0.22 + base.attendance*0.12 + base.club*0.11 + base.major*0.14 + base.leadership*0.07);
-  const exam = clamp(base.mock*0.78 + base.writing*0.12 + base.routine*0.10);
-  const routineScore = clamp(base.routine*0.72 + base.attendance*0.28);
-
-  const weakest = [
-    { key:"gpa", name:"내신", score:base.gpa },
-    { key:"mock", name:"모의고사", score:base.mock },
-    { key:"seteuk", name:"세특", score:base.seteuk },
-    { key:"attendance", name:"출결", score:base.attendance },
-    { key:"club", name:"동아리/자율활동", score:base.club },
-    { key:"major", name:"진로 일관성", score:base.major },
-    { key:"leadership", name:"공동체성", score:base.leadership },
-    { key:"writing", name:"논술/서술", score:base.writing },
-    { key:"interview", name:"면접/발표", score:base.interview },
-    { key:"routine", name:"루틴", score:base.routine }
-  ].sort((a,b)=>a.score-b.score);
-
-  const xp = clamp(
-    fit*0.30 + record*0.22 + exam*0.22 + routineScore*0.12 +
-    BADGES.filter(b=>b.unlocked(state.values)).length * 3.5
-  ) * 10;
-
-  const level = Math.max(1, Math.floor(xp / 120) + 1);
-  const rank = level >= 8 ? "마스터 전략가" : level >= 6 ? "다이아 지휘관" : level >= 4 ? "골드 분석가" : level >= 2 ? "실버 플래너" : "새내기 모험가";
-
-  return { base, fit, record, exam, routineScore, weakest, xp, level, rank };
-}
-
-function fitLabel(score){
-  if(score >= 85) return ["최상", "현재 전형과 잘 맞습니다. 대학별 세부 조건 검토 단계로 넘어갈 수 있습니다."];
-  if(score >= 70) return ["우수", "방향은 맞습니다. 약점 1~2개만 줄이면 실전 경쟁력이 올라갑니다."];
-  if(score >= 55) return ["보통", "가능성은 있으나 핵심 약점 보정 없이는 지원 효율이 떨어질 수 있습니다."];
-  return ["주의", "현재 전형을 주력으로 삼기 전에 보완 루트를 먼저 설계해야 합니다."];
-}
-
-function trackSpecificAdvice(scores){
-  const t = state.track;
-  const s = scores.base;
-  if(t === "jonghap"){
-    return [
-      { title:"세특 해석력", text: s.seteuk >= 75 ? "수업에서 배운 내용을 확장한 흔적이 비교적 좋습니다. 이제는 활동 수를 늘리기보다 탐구 밀도를 올리는 편이 낫습니다." : "학종은 세특이 중심축입니다. 질문-탐구-결론 구조가 보이도록 과목별 대표 사례를 다시 설계하세요." },
-      { title:"전공 일관성", text: s.major >= 75 ? "선택과목, 활동, 독서가 비교적 한 방향으로 보입니다. 학년별 연결 문장을 정리해 두면 면접 대비가 쉬워집니다." : "관심 분야가 흩어져 보이면 평가자가 강점을 읽기 어렵습니다. 핵심 전공 키워드 1~2개를 먼저 고정하세요." },
-      { title:"출결·행특 리스크", text: s.attendance >= 90 ? "학교생활 신뢰도는 안정적입니다. 이제 학교 안에서 보이는 기여를 더 선명하게 만드는 쪽이 좋습니다." : "출결 안정성이 낮으면 학업 지속성과 태도 해석에 불리할 수 있습니다. 작은 누적도 줄이세요." }
-    ];
-  }
-  if(t === "gyogwa"){
-    return [
-      { title:"내신 체력", text: Number(state.values.gpa) <= 2 ? "상위 교과전형까지 검토할 수 있습니다. 다만 반영교과와 진로선택 반영 방식을 대학별로 꼭 비교하세요." : "교과전형의 핵심은 내신입니다. 수행평가, 단원평가, 시험 직전 회전 루틴을 다시 정비해야 합니다." },
-      { title:"수능최저 대응", text: s.mock >= 70 ? "수능최저 대응 가능성이 보입니다. 지원 대학별 최저 조합을 먼저 분류하세요." : "수능최저를 못 맞추면 교과전형 합격 가능성이 크게 떨어집니다. 최저 충족 과목부터 살리세요." },
-      { title:"학기별 안정성", text: s.routine >= 75 ? "학기 운영이 안정적입니다. 목표 대학군을 실제 점수대로 세분화하는 단계입니다." : "교과전형은 '폭발력'보다 '안정성'이 중요합니다. 주간 루틴을 고정해서 등급 흔들림을 줄이세요." }
-    ];
-  }
-  if(t === "nonsul"){
-    return [
-      { title:"기출 적응도", text: s.writing >= 75 ? "답안 구조화 능력이 좋습니다. 이제 대학별 기출 분화 대응으로 넘어가세요." : "논술은 감각이 아니라 기출 적응입니다. 대학별 문제 유형과 채점 포인트를 따로 정리해야 합니다." },
-      { title:"수능최저", text: s.mock >= 70 ? "수능최저를 맞출 가능성이 있어 논술의 실질 경쟁력이 생깁니다." : "수능최저를 맞추지 못하면 논술 실력이 있어도 의미가 작아집니다. 최저 과목 우선 보강이 필요합니다." },
-      { title:"완성 시간", text: s.routine >= 70 ? "시간 안에 답안을 마무리하는 훈련을 넣으면 실전성이 더 올라갑니다." : "논술은 생각만 잘해도 안 됩니다. 제한 시간 내 분량과 구조를 마무리하는 루틴이 필요합니다." }
-    ];
-  }
-  return [
-    { title:"실전 점수", text: s.mock >= 80 ? "정시 주력으로 밀어볼 수 있는 구간입니다. 대학별 반영 방식과 탐구 변수까지 계산하세요." : "정시는 모의 성적이 가장 중요합니다. 한 과목만 강한 상태면 전체 지원력이 약합니다." },
-    { title:"루틴 재현성", text: s.routine >= 80 ? "루틴이 안정적이라 실전 재현성이 좋습니다. 실모와 오답 회전 비중을 올리세요." : "루틴이 흔들리면 정시는 무너집니다. 수면-실모-오답-복습 시간을 고정해야 합니다." },
-    { title:"약점 제거", text: s.writing >= 65 ? "국어·수학의 서술형 사고력이 받쳐주면 상위권 문제 적응이 빨라집니다." : "정시는 한 과목 약점이 총점을 끌어내립니다. 가장 흔들리는 과목을 먼저 봉합하세요." }
-  ];
-}
-
-function instantFeedbackItems(scores){
-  const map = {
-    gpa: {
-      title:"내신 구조 보완",
-      text:"등급은 전형의 기초 체력입니다. 교과는 직접 반영, 학종은 학업역량의 기반이므로 시험 직전보다 평소 단원별 회전 루틴을 먼저 고정하세요."
-    },
-    mock: {
-      title:"수능/모의 성적 보강",
-      text:"수능최저·정시·논술 실질 경쟁력은 결국 모의고사에서 드러납니다. 최근 3회 기준으로 약한 영역을 먼저 정리하세요."
-    },
-    seteuk: {
-      title:"세특 밀도 상승",
-      text:"활동을 더 많이 하는 것보다, 수업 질문-탐구-발표-확장 기록이 남는 구조를 만드는 것이 중요합니다."
-    },
-    attendance: {
-      title:"출결 리스크 제거",
-      text:"지각·조퇴 누적은 학교생활 신뢰도에 영향을 줍니다. 가장 먼저 관리해서 평가 리스크를 줄이세요."
-    },
-    club: {
-      title:"활동의 질 개선",
-      text:"동아리 이름보다 역할, 산출물, 지속성이 중요합니다. 활동 후 결과물을 남기는 방식으로 바꾸세요."
-    },
-    major: {
-      title:"전공 스토리 정리",
-      text:"과목 선택, 독서, 탐구, 발표가 한 방향으로 이어져야 서류 해석이 쉬워집니다. 핵심 키워드 2개로 줄이세요."
-    },
-    leadership: {
-      title:"공동체성 증빙",
-      text:"직책 수집보다 맡은 역할을 끝까지 수행한 경험이 중요합니다. 협업, 배려, 책임 수행 사례를 남기세요."
-    },
-    writing: {
-      title:"논술/서술 훈련",
-      text:"문장을 많이 쓰는 것보다 구조화가 핵심입니다. 요약-비교-판단 또는 개념-풀이-검산 구조로 반복하세요."
-    },
-    interview: {
-      title:"면접 답변 구조화",
-      text:"1분 자기소개, 전공 관심 이유, 세특 대표 사례 3개는 즉답 가능해야 합니다."
-    },
-    routine: {
-      title:"루틴 고정",
-      text:"입시는 장기전이라 하루 폭발보다 주간 지속성이 더 중요합니다. 수면과 오답 복기 시간을 고정하세요."
-    }
-  };
-  return scores.weakest.slice(0,3).map(x=>({
-    title: map[x.key].title,
-    score: x.score,
-    text: map[x.key].text
-  }));
-}
-
-function generateSchoolFeedback(scores){
-  const s = scores.base;
-  return [
-    {
-      title:"교과 학업역량",
-      text: Number(state.values.gpa) <= 2
-        ? "교과 기반은 강한 편입니다. 다만 상위권 대학일수록 단순 평균보다 과목 위계와 유지력, 반영교과 방식을 함께 봐야 합니다."
-        : "현재 내신은 주력 전형 선택에 영향을 줍니다. 한 번에 전체를 올리려 하지 말고 반영 비중 큰 과목과 수행평가부터 구조적으로 관리하세요."
-    },
-    {
-      title:"세특·수업활동",
-      text: s.seteuk >= 75
-        ? "세특 경쟁력이 비교적 좋습니다. 이제는 '무엇을 했는가'보다 '왜 그 활동을 했고 무엇을 배웠는가'가 드러나도록 대표 사례를 추리세요."
-        : "세특이 약하면 학생부 전체 해석력이 떨어집니다. 질문-실험/자료조사-발표-후속 탐구 흐름이 보이도록 과목별 1개씩 대표 사례를 만드세요."
-    },
-    {
-      title:"동아리·자율활동",
-      text: s.club >= 70
-        ? "활동의 질이 나쁘지 않습니다. 활동 수를 늘리기보다 결과물과 역할을 더 선명하게 남기는 편이 좋습니다."
-        : "단순 참여형 활동은 평가 효율이 낮습니다. 보고서, 발표자료, 팀 역할, 후배 공유처럼 남는 결과를 만드세요."
-    },
-    {
-      title:"진로 일관성",
-      text: s.major >= 75
-        ? "전공 방향성이 비교적 선명합니다. 선택과목, 독서, 활동을 연결하는 자기 서사를 미리 말로 정리해 두세요."
-        : "학년별 관심사가 자주 바뀌면 서류가 약해 보입니다. '왜 이 분야를 계속 파고드는지' 설명할 한 줄 문장을 먼저 정리하세요."
-    },
-    {
-      title:"면접·발표",
-      text: s.interview >= 75
-        ? "전달력이 괜찮습니다. 이제는 전공 질문에 대한 근거 사례와 예상 꼬리질문까지 정리하면 좋습니다."
-        : "답변 길이보다 구조가 중요합니다. 결론-근거-사례 순으로 40초 안에 답하는 훈련부터 시작하세요."
-    },
-    {
-      title:"생활 관리",
-      text: s.routine >= 75 && s.attendance >= 90
-        ? "장기전 지속 가능성이 괜찮습니다. 이 상태를 유지하면서 가장 큰 약점 과목에만 추가 시간을 넣으세요."
-        : "출결과 루틴이 흔들리면 어떤 전형도 안정적으로 유지하기 어렵습니다. 취침·기상·복습 시간을 먼저 고정하세요."
-    }
-  ];
-}
-
-function generateQuests(scores){
-  const weakest = scores.weakest.slice(0,3);
-  const track = TRACKS[state.track];
-  const quests = [
-    {
-      title:"핵심 약점 1위 보정",
-      done: weakest[0].score >= 70,
-      reward:"+120 EXP",
-      text:`현재 가장 약한 영역은 ${weakest[0].name}입니다. 이번 주에는 이 영역 하나만 목표치 10점 상승을 목표로 잡으세요.`
-    },
-    {
-      title:"전형 맞춤 증거 수집",
-      done: scores.fit >= 75,
-      reward:"+160 EXP",
-      text:`${track.name} 전형에서는 ${track.evidence[0]}, ${track.evidence[1]}가 특히 중요합니다. 이번 주 산출물 1개를 남기세요.`
-    },
-    {
-      title:"실전 루틴 5일 연속",
-      done: scores.routineScore >= 75,
-      reward:"+100 EXP",
-      text:"수면-공부 시작 시간-복습 시간을 5일 연속 같은 패턴으로 유지하면 성적 변동성이 줄어듭니다."
-    },
-    {
-      title:"대표 사례 3개 정리",
-      done: scores.base.seteuk >= 75 && scores.base.major >= 75,
-      reward:"+180 EXP",
-      text:"세특 또는 면접에서 쓸 수 있는 대표 학습 사례 3개를 문장으로 정리하세요. 무엇을 배우고 어떻게 확장했는지까지 포함합니다."
-    },
-    {
-      title:"모의·오답 회전",
-      done: scores.exam >= 75,
-      reward:"+140 EXP",
-      text:"최근 시험에서 틀린 유형을 다시 분류하고, 같은 실수를 막을 체크리스트를 만드세요."
-    }
-  ];
-  return quests;
-}
-
-function rankColor(rank){
-  if(rank.includes("마스터")) return "#ffd968";
-  if(rank.includes("다이아")) return "#8fe3ff";
-  if(rank.includes("골드")) return "#ffe082";
-  if(rank.includes("실버")) return "#d7e7ff";
-  return "#c7d6f5";
-}
-
-function renderTrackButtons(){
-  const wrap = document.getElementById("trackButtons");
-  wrap.innerHTML = Object.entries(TRACKS).map(([id, t])=>`
-    <button class="track-btn ${state.track===id?'active':''}" data-track="${id}" style="border-color:${state.track===id?t.color:'var(--line)'}; box-shadow:${state.track===id?`0 0 0 1px ${t.color} inset`:'none'}">
-      <div><strong>${t.icon} ${t.name}</strong></div>
-      <small>${t.short}</small>
-    </button>
-  `).join("");
-  wrap.querySelectorAll("[data-track]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      state.track = btn.dataset.track;
-      updateAll();
-    });
-  });
-}
-
-function renderPresetButtons(){
-  const wrap = document.getElementById("presetButtons");
-  wrap.innerHTML = Object.entries(PRESETS).map(([id,p])=>`
-    <button class="preset-btn" data-preset="${id}">${p.name}</button>
-  `).join("");
-  wrap.querySelectorAll("[data-preset]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const preset = PRESETS[btn.dataset.preset];
-      state.values = { ...preset.values };
-      renderDiagnosisForm();
-      updateAll();
-    });
-  });
-}
-
-function renderDiagnosisForm(){
-  const wrap = document.getElementById("diagnosisForm");
-  wrap.innerHTML = DIAG_FIELDS.map(field => `
-    <div class="range-item">
-      <div class="range-head">
-        <div class="range-label">${field.label}</div>
-        <div class="range-val" id="${field.id}Value">${field.display(state.values[field.id])}</div>
-      </div>
-      <input
-        type="range"
-        id="${field.id}"
-        min="${field.min}"
-        max="${field.max}"
-        step="${field.step}"
-        value="${state.values[field.id]}"
-      />
-      <div class="range-help">${field.help}</div>
-    </div>
-  `).join("");
-
-  DIAG_FIELDS.forEach(field=>{
-    const el = document.getElementById(field.id);
-    el.addEventListener("input", (e)=>{
-      state.values[field.id] = Number(e.target.value);
-      document.getElementById(field.id + "Value").textContent = field.display(state.values[field.id]);
-      updateAll(false);
-    });
-  });
-}
-
-function renderTabButtons(){
-  const wrap = document.getElementById("tabButtons");
-  wrap.innerHTML = TABS.map(tab=>`
-    <button class="tab-btn ${state.tab===tab.id?'active':''}" data-tab="${tab.id}">${tab.name}</button>
-  `).join("");
-  wrap.querySelectorAll("[data-tab]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      state.tab = btn.dataset.tab;
-      updateAll(false);
-    });
-  });
-}
-
-function renderBadges(scores){
-  const wrap = document.getElementById("badgeGrid");
-  wrap.innerHTML = BADGES.map(b=>{
-    const on = b.unlocked(state.values);
-    return `
-      <div class="badge-card ${on?'':'locked'}">
-        <div class="badge-icon">${b.icon}</div>
-        <div class="badge-name">${b.name}</div>
-        <div class="badge-desc">${b.desc}</div>
-      </div>
-    `;
-  }).join("");
-}
-
-function renderInstantFeedback(scores){
-  const wrap = document.getElementById("instantFeedback");
-  const items = instantFeedbackItems(scores);
-  wrap.innerHTML = items.map(item=>`
-    <div class="feedback-item">
-      <strong>${item.title} · <span class="muted">${item.score}점</span></strong>
-      <p>${item.text}</p>
-    </div>
-  `).join("");
-}
-
-function renderOverview(scores){
-  const track = TRACKS[state.track];
-  const roadmap = GRADE_ROADMAP[state.grade];
-  const advice = trackSpecificAdvice(scores);
-  const fit = fitLabel(scores.fit);
-  return `
-    <div class="hero-track">
-      <div class="expert-box">
-        <h3 style="color:${track.color}">${track.icon} ${track.name}</h3>
-        <p style="margin:0;color:#dbe8ff;line-height:1.8;font-size:15px">${track.long}</p>
-        <div class="tag-row" style="margin-top:14px">
-          ${track.evidence.map(x=>`<span class="tag">${x}</span>`).join("")}
-        </div>
-      </div>
-      <div class="expert-box">
-        <h4>현재 판정</h4>
-        <div class="score-value" style="font-size:40px;color:${track.color};margin-bottom:8px">${scores.fit}</div>
-        <div class="status">${fit[0]}</div>
-        <p style="margin-top:12px;color:#d7e4fb;line-height:1.75">${fit[1]}</p>
-      </div>
-    </div>
-
-    <div class="notice">
-      <div class="insight-item">
-        <strong>2026학년도 체크 포인트</strong>
-        <p>수시는 학생부위주, 정시는 수능위주 선발 기조가 유지되고, 대학들은 학교폭력 조치사항을 의무 반영합니다. 실제 지원 시 대학별 반영 방식은 반드시 다시 확인해야 합니다.</p>
-      </div>
-      <div class="insight-item">
-        <strong>현재 고1 체크 포인트</strong>
-        <p>현재 고1은 2028학년도 개편 체제의 적용 대상입니다. 통합형 수능, 내신 5등급 체제, 하반기 모의평가 시기 변화 등을 기준으로 준비 방향을 잡아야 합니다.</p>
-      </div>
-    </div>
-
-    <div class="expert-grid" style="margin-top:16px">
-      ${advice.map(item=>`
-        <div class="expert-box">
-          <h4>${item.title}</h4>
-          <p style="margin:0;color:#dce7fb;line-height:1.8">${item.text}</p>
-        </div>
-      `).join("")}
-      <div class="expert-box">
-        <h4>${state.grade} 우선 과제</h4>
-        <div class="timeline">
-          ${roadmap.map(r=>`
-            <div class="time-item">
-              <div class="time-badge">${r.stage}</div>
-              <div style="color:#dce7fb;line-height:1.8">${r.text}</div>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-note">
-      <strong>추천 학생 유형</strong><br>
-      ${track.recommended}
-    </div>
-  `;
-}
-
-function renderExpert(scores){
-  const track = TRACKS[state.track];
-  return `
-    <h3 style="color:${track.color}">${track.icon} ${track.name} 전문가 가이드</h3>
-    <div class="expert-grid">
-      <div class="expert-box">
-        <h4>이 전형이 실제로 보는 것</h4>
-        <ul>${track.mustShow.map(x=>`<li>${x}</li>`).join("")}</ul>
-      </div>
-      <div class="expert-box">
-        <h4>자주 하는 오해</h4>
-        <ul>${track.mistakes.map(x=>`<li>${x}</li>`).join("")}</ul>
-      </div>
-      <div class="expert-box">
-        <h4>평가자가 읽는 증거</h4>
-        <ul>${track.evidence.map(x=>`<li>${x}</li>`).join("")}</ul>
-      </div>
-      <div class="expert-box">
-        <h4>현재 상태 해석</h4>
-        <ul>
-          <li>전형 적합도: <span class="emphasis">${scores.fit}점</span></li>
-          <li>학생부 경쟁력: <span class="emphasis">${scores.record}점</span></li>
-          <li>시험 경쟁력: <span class="emphasis">${scores.exam}점</span></li>
-          <li>루틴 안정성: <span class="emphasis">${scores.routineScore}점</span></li>
+      <div class="card">
+        <h3 style="margin-top:0">실무에서 먼저 던질 질문 5개</h3>
+        <ul class="list">
+          <li>희망 전공이 아직 “직업명” 수준인지, “학문 분야” 수준인지</li>
+          <li>선택과목이 전공과 연결되는지, 단순 점수 회피형인지</li>
+          <li>세특이 수업 참여 기록인지, 탐구 확장 기록인지</li>
+          <li>학생부교과·학종·논술·정시 중 무엇이 주전형이고 무엇이 보조전형인지</li>
+          <li>고1·고2·고3 중 어느 시점에서 전략 수정이 필요한지</li>
         </ul>
       </div>
     </div>
 
-    <div class="footer-note">
-      <strong>실전 운영 원칙</strong><br>
-      교과는 <strong>성적 안정성</strong>, 학종은 <strong>맥락과 성장 서사</strong>, 논술은 <strong>대학별 기출 적응 + 수능최저</strong>, 정시는 <strong>실전 재현성</strong>이 핵심입니다.
-    </div>
-  `;
-}
+    <div id="credit" class="section-title">2. 고교학점제 중심 상담 프레임</div>
+    <div class="sub">학생이 “너무 어렵다”고 느끼는 이유를 상담 언어로 바꾸면, 선택의 부담을 구조화할 수 있습니다.</div>
 
-function renderFeedback(scores){
-  const items = generateSchoolFeedback(scores);
-  return `
-    <h3>🏫 학교생활 전반 피드백</h3>
-    <div class="feedback-list">
-      ${items.map(item=>`
-        <div class="feedback-item">
-          <strong>${item.title}</strong>
-          <p>${item.text}</p>
+    <div class="grid cols-3">
+      <div class="card">
+        <div class="badge blue">왜 어려운가</div>
+        <h3>선택이 늘었지만 기준은 더 복잡해짐</h3>
+        <ul class="list">
+          <li>이제 학생은 단순히 수업을 듣는 것이 아니라, <b>어떤 과목을 왜 골랐는지</b> 설명해야 합니다.</li>
+          <li>학생은 “좋아하는 과목”, “잘 나오는 과목”, “대입에 유리한 과목”을 동시에 고민하게 됩니다.</li>
+          <li>상담사는 이 세 가지를 분리해 설명해야 혼란이 줄어듭니다.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="badge green">무엇을 봐야 하나</div>
+        <h3>과목 선택 + 성취도 + 기록의 연결</h3>
+        <ul class="list">
+          <li><b>과목 선택</b>: 전공 적합성과 난이도 균형</li>
+          <li><b>성취도</b>: 등급/성취도/평가 방식의 관리</li>
+          <li><b>기록</b>: 세특, 창체, 진로활동에서 선택 이유와 탐구 흔적 확인</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="badge orange">실무 포인트</div>
+        <h3>점수형 선택과 스토리형 선택을 구분</h3>
+        <ul class="list">
+          <li>교과전형 중심 학생은 반영교과와 안정 등급 관리가 우선입니다.</li>
+          <li>학종 중심 학생은 과목 선택의 일관성과 탐구 확장이 더 중요합니다.</li>
+          <li>정시 중심 학생도 학교생활을 버리면 안 됩니다. 학교폭력·출결·학업 태도 리스크는 여전히 관리 대상입니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="card">
+        <h3 style="margin-top:0">고교학점제 상담 프로토콜</h3>
+        <div class="pillbar">
+          <span class="pill">1단계: 희망 전공 명확화</span>
+          <span class="pill">2단계: 선택과목 맵핑</span>
+          <span class="pill">3단계: 전형 우선순위 결정</span>
+          <span class="pill">4단계: 학생부 증거 설계</span>
+          <span class="pill">5단계: 학년별 수정 계획</span>
         </div>
-      `).join("")}
-    </div>
-    <div class="footer-note">
-      <strong>실행 팁</strong><br>
-      학교생활 피드백은 한 번에 전부 고치면 실패합니다.
-      <span class="emphasis">약한 영역 1개 + 유지할 강점 1개</span> 방식으로 주간 계획을 짜야 실제로 개선됩니다.
-    </div>
-  `;
-}
-
-function renderQuests(scores){
-  const quests = generateQuests(scores);
-  const unlocked = BADGES.filter(b=>b.unlocked(state.values)).length;
-  return `
-    <h3>🎮 이번 주 퀘스트 보드</h3>
-    <div class="quests-summary">
-      <div class="expert-box">
-        <h4>레벨</h4>
-        <p style="font-size:28px;font-weight:900;margin:0">${scores.level}</p>
-      </div>
-      <div class="expert-box">
-        <h4>누적 EXP</h4>
-        <p style="font-size:28px;font-weight:900;margin:0">${scores.xp}</p>
-      </div>
-      <div class="expert-box">
-        <h4>해금 배지</h4>
-        <p style="font-size:28px;font-weight:900;margin:0">${unlocked}개</p>
-      </div>
-    </div>
-
-    <div class="quest-list">
-      ${quests.map(q=>`
-        <div class="quest-item">
-          <strong>${q.done ? "✅ 완료 가능" : "🟨 진행 중"} · ${q.title}</strong>
-          <p>${q.text}</p>
-          <p style="margin-top:10px" class="reward">${q.reward}</p>
+        <div class="callout">
+          상담사는 “이 과목을 들으면 유리하다”가 아니라, <b>“이 전형을 노릴 때 이 과목이 어떻게 증거가 되는가”</b>로 설명해야 학생과 학부모가 납득합니다.
         </div>
-      `).join("")}
+        <ul class="list">
+          <li><b>인문/사회계열</b>: 독서·토론·사회과 탐구·자료해석·글쓰기 연결</li>
+          <li><b>상경/경영계열</b>: 수학, 사회/경제, 데이터 해석, 경영·시장 이슈 탐구 연결</li>
+          <li><b>공학/컴공계열</b>: 수학, 과학, 정보, 문제 해결형 탐구 기록 연결</li>
+          <li><b>의약학계열</b>: 높은 성취도 유지 + 과학 심화 + 일관된 학업 태도 관리</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">학년별 핵심 상담 포인트</h3>
+        <details open>
+          <summary>고1</summary>
+          <ul class="list">
+            <li>현재 고1은 2028 대입 체제 적용 대상입니다.</li>
+            <li>과목 선택의 이유와 방향을 처음부터 잡아야 합니다.</li>
+            <li>내신 5등급 체제에서 변별 포인트는 과목 구성, 세특, 전공 연계성으로 이동합니다.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>고2</summary>
+          <ul class="list">
+            <li>이미 선택한 과목의 흐름이 학생부와 맞는지 점검해야 합니다.</li>
+            <li>세특이 단순 참여형이면 심화 탐구형으로 전환해야 합니다.</li>
+            <li>학종·교과·논술·정시의 비중을 이 시기부터 현실적으로 재배치해야 합니다.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>고3</summary>
+          <ul class="list">
+            <li>새로운 선택보다 기존 기록의 정리와 지원전략이 우선입니다.</li>
+            <li>수시 6장 구성에서 상향/적정/안정의 역할 분담을 분명히 해야 합니다.</li>
+            <li>정시는 백분위·표준점수·가산점 구조 확인이 필수입니다.</li>
+          </ul>
+        </details>
+      </div>
     </div>
 
-    <div class="footer-note">
-      <strong>게임화 규칙</strong><br>
-      점수는 진단용이고, 레벨은 <strong>지금 강한 것</strong>보다 <strong>약한 것을 얼마나 줄였는지</strong>에 의미가 있습니다.
-      특히 ${scores.weakest[0].name}, ${scores.weakest[1].name} 보정이 가장 큰 성장 포인트입니다.
+    <div id="groups" class="section-title">3. 대학군별 총괄 분석</div>
+    <div class="sub">아래 대학군 명칭은 공식 분류가 아니라, 수험생 커뮤니티와 상담 현장에서 통용되는 비공식 묶음명을 실무 편의상 정리한 것입니다.</div>
+
+    <div class="grid cols-3">
+      <div class="group-card">
+        <h3>서연고</h3>
+        <p>서울대 · 연세대 · 고려대</p>
+        <div class="badge blue">핵심 전형</div>
+        <span class="small">학종 중심 + 일부 대학 논술/정시 구조 병행</span>
+        <ul class="list">
+          <li>서울대는 단순 교과 컷 비교보다 서류·면접·교과평가 구조 해석이 더 중요</li>
+          <li>연세대·고려대는 공개표준안 기준 학종 대표 모집단위 70%컷이 대체로 1등급 후반~2등급대 초중반에서 형성</li>
+          <li>교과전형보다 <b>기록의 설계와 면접/최저</b> 해석 비중이 큼</li>
+        </ul>
+      </div>
+      <div class="group-card">
+        <h3>서성한 · 중경외시 · 건동홍</h3>
+        <p>상위권 확장군</p>
+        <div class="badge green">핵심 전형</div>
+        <span class="small">학종 + 일부 논술 + 정시 병행 설계</span>
+        <ul class="list">
+          <li>학종 70%컷은 모집단위에 따라 1등급 후반~3등급대 중반까지 분포</li>
+          <li>같은 대학 내에서도 모집단위별 편차가 매우 큼</li>
+          <li>중앙대 등은 학종 대표 학과가 1점대 후반~3점대 초반까지 넓게 나타남</li>
+        </ul>
+      </div>
+      <div class="group-card">
+        <h3>국숭세단</h3>
+        <p>국민대 · 숭실대 · 세종대 · 단국대</p>
+        <div class="badge orange">핵심 전형</div>
+        <span class="small">교과/학종/정시 혼합형 상담 적합</span>
+        <ul class="list">
+          <li>대표 공개표본상 2등급 초반~3등급대 중반 분포가 많음</li>
+          <li>컴공·보안·데이터 계열은 상향 형성, 일부 융합/광역모집은 상대적으로 완만</li>
+          <li>정시 병행 상담 효율이 높음</li>
+        </ul>
+      </div>
+      <div class="group-card">
+        <h3>광명상가</h3>
+        <p>광운대 · 명지대 · 상명대 · 가톨릭대(성심)</p>
+        <div class="badge blue">핵심 전형</div>
+        <span class="small">교과·학종 해석 분리 필요</span>
+        <ul class="list">
+          <li>광운·상명 공개표본상 3등급 안팎~4등급대 초반까지 폭넓게 확인됨</li>
+          <li>명지대는 면접형/서류형 학종 구조 해석이 중요</li>
+          <li>교과 컷만 보고 지원하면 실제 서류경쟁력 해석을 놓치기 쉬움</li>
+        </ul>
+      </div>
+      <div class="group-card">
+        <h3>한서삼</h3>
+        <p>한성대 · 서경대 · 삼육대</p>
+        <div class="badge green">핵심 전형</div>
+        <span class="small">교과 안정지원 + 학생부 해석 병행</span>
+        <ul class="list">
+          <li>대표 공개표본상 3등급 초반 전후 분포가 확인되나 일부 전공 편차 큼</li>
+          <li>실기/특기/디자인 계열은 일반 인문·자연과 다른 방식으로 봐야 함</li>
+          <li>하향 안정지원용이 아니라 전공 적합도 기반 재배치가 중요</li>
+        </ul>
+      </div>
+      <div class="group-card">
+        <h3>인가경</h3>
+        <p>인천대 · 가천대 · 경기대</p>
+        <div class="badge orange">핵심 전형</div>
+        <span class="small">교과/학종/정시 모두 상담 수요가 큼</span>
+        <ul class="list">
+          <li>인천대는 교과성적우수자, 가천대는 바람개비/의약학 등 전형 성격 구분이 뚜렷함</li>
+          <li>경기대는 2026학년도부터 학생부 반영을 환산점수 방식으로 변경한 점 해석 필요</li>
+          <li>같은 3등급대라도 전공군과 전형에 따라 의미가 크게 달라짐</li>
+        </ul>
+      </div>
     </div>
-  `;
-}
 
-function renderPanel(scores){
-  const panel = document.getElementById("panel");
-  if(state.tab === "overview") panel.innerHTML = renderOverview(scores);
-  if(state.tab === "expert") panel.innerHTML = renderExpert(scores);
-  if(state.tab === "feedback") panel.innerHTML = renderFeedback(scores);
-  if(state.tab === "quests") panel.innerHTML = renderQuests(scores);
-}
+    <div id="benchmark" class="section-title">4. 2025학년도 공개결과 표본 벤치마크</div>
+    <div class="sub">공식 공개자료를 바탕으로 만든 상담용 표본입니다. “전체 대학·전체 학과 완전 수록판”이 아니라, 상담 현장에서 많이 쓰는 대학군 중심의 대표 모집단위를 실어 빠르게 비교할 수 있도록 구성했습니다.</div>
 
-function updateStats(scores){
-  const fit = fitLabel(scores.fit);
-  document.getElementById("fitScore").textContent = scores.fit;
-  document.getElementById("recordScore").textContent = scores.record;
-  document.getElementById("examScore").textContent = scores.exam;
-  document.getElementById("routineScore").textContent = scores.routineScore;
+    <div class="card">
+      <div class="filters">
+        <input id="searchInput" placeholder="대학명, 모집단위, 메모 검색" />
+        <select id="groupFilter">
+          <option value="">대학군 전체</option>
+        </select>
+        <select id="routeFilter">
+          <option value="">전형 전체</option>
+        </select>
+        <select id="typeFilter">
+          <option value="">자료 유형 전체</option>
+          <option value="numeric">정량 표본</option>
+          <option value="structural">구조 해석</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>대학군</th>
+              <th>대학</th>
+              <th>전형</th>
+              <th>대표 모집단위</th>
+              <th>작년 공개지표</th>
+              <th>상담 해석 메모</th>
+            </tr>
+          </thead>
+          <tbody id="benchmarkBody"></tbody>
+        </table>
+      </div>
+      <div class="foot">
+        ※ 동일한 “70% cut”이라도 대학마다 반영교과·계산 방식·정성평가 보조지표 활용이 달라 직접 1:1 비교에는 한계가 있습니다.  
+        ※ 일부 대학은 공개표준안 구조상 정량 컷보다 전형 구조 해석이 더 중요하여, 해당 행은 “구조 해석”으로 표기했습니다.  
+        ※ 대학군 명칭은 비공식 약칭이며, 학교 포함 범위는 현장 관행에 따라 달라질 수 있습니다.
+      </div>
+    </div>
 
-  document.getElementById("fitBar").style.width = scores.fit + "%";
-  document.getElementById("recordBar").style.width = scores.record + "%";
-  document.getElementById("examBar").style.width = scores.exam + "%";
-  document.getElementById("routineBar").style.width = scores.routineScore + "%";
+    <div id="consulting" class="section-title">5. 상담 시뮬레이터</div>
+    <div class="sub">학생 기본 정보를 넣으면, 상담사가 바로 초안 메모를 뽑아낼 수 있게 만들었습니다. 결과는 실무 메모 초안이며 최종 판단은 대학별 모집요강과 학생부 원본을 함께 확인해 조정해야 합니다.</div>
 
-  document.getElementById("fitStatus").textContent = fit[0];
-  document.getElementById("fitTip").textContent = fit[1];
+    <div class="two-col">
+      <div class="card">
+        <div class="grid cols-2">
+          <div>
+            <label>학년</label>
+            <select id="grade">
+              <option>중3</option>
+              <option>고1</option>
+              <option>고2</option>
+              <option selected>고3</option>
+              <option>N수</option>
+            </select>
+          </div>
+          <div>
+            <label>희망 계열</label>
+            <select id="track">
+              <option>인문사회</option>
+              <option>상경</option>
+              <option>자연과학</option>
+              <option selected>공학/컴퓨터</option>
+              <option>의약학</option>
+              <option>미디어/콘텐츠</option>
+            </select>
+          </div>
+          <div>
+            <label>내신 수준</label>
+            <select id="gpaBand">
+              <option>1.0~1.7</option>
+              <option>1.8~2.3</option>
+              <option>2.4~2.9</option>
+              <option selected>3.0~3.6</option>
+              <option>3.7~4.4</option>
+              <option>4.5 이하</option>
+            </select>
+          </div>
+          <div>
+            <label>수능 경쟁력</label>
+            <select id="csat">
+              <option>강함</option>
+              <option selected>중간</option>
+              <option>약함</option>
+            </select>
+          </div>
+          <div>
+            <label>세특·탐구 깊이</label>
+            <select id="recordDepth">
+              <option>강함</option>
+              <option selected>중간</option>
+              <option>약함</option>
+            </select>
+          </div>
+          <div>
+            <label>선택과목-전공 일관성</label>
+            <select id="subjectFit">
+              <option>높음</option>
+              <option selected>보통</option>
+              <option>낮음</option>
+            </select>
+          </div>
+          <div>
+            <label>면접 대응력</label>
+            <select id="interview">
+              <option>강함</option>
+              <option selected>중간</option>
+              <option>약함</option>
+            </select>
+          </div>
+          <div>
+            <label>학교생활 리스크</label>
+            <select id="risk">
+              <option>거의 없음</option>
+              <option selected>보통</option>
+              <option>높음</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:14px">
+          <label>상담 메모 (자유 입력)</label>
+          <textarea id="memo" placeholder="예: 수학은 강하지만 영어가 약함 / 동아리 활동은 많으나 세특 연결이 약함 / 고교학점제 선택과목 결정이 어려워함"></textarea>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+          <button class="btn primary" onclick="generatePlan()">전략 생성</button>
+          <button class="btn" onclick="copyPlan()">결과 복사</button>
+        </div>
+      </div>
 
-  const weak = scores.weakest[0];
-  document.getElementById("miniTrack").textContent = TRACKS[state.track].name;
-  document.getElementById("miniTrackText").textContent = TRACKS[state.track].short;
-  document.getElementById("miniGrade").textContent = state.grade;
-  document.getElementById("miniExp").textContent = scores.xp;
-  document.getElementById("miniFocus").textContent = weak.name;
-  document.getElementById("miniFocusText").textContent = `현재 ${weak.name} 점수가 가장 낮습니다. 먼저 여기를 끌어올리는 게 효율적입니다.`;
+      <div class="result-box" id="planResult">
+        <h3 style="margin-top:0">상담 결과 초안</h3>
+        <div class="small">왼쪽 값을 입력한 뒤 “전략 생성”을 누르면 결과가 나옵니다.</div>
+      </div>
+    </div>
 
-  const rankBadge = document.getElementById("rankBadge");
-  rankBadge.textContent = `Lv.${scores.level} ${scores.rank}`;
-  rankBadge.style.color = rankColor(scores.rank);
-  rankBadge.style.borderColor = rankColor(scores.rank) + "66";
-  rankBadge.style.background = rankColor(scores.rank) + "18";
-}
+    <div id="checklist" class="section-title">6. 상담 체크리스트</div>
+    <div class="sub">학생부 원본, 과목 선택표, 성적표, 모의고사 성적표를 함께 놓고 확인할 항목입니다.</div>
 
-function updateAll(repaintButtons=true){
-  if(repaintButtons){
-    renderTrackButtons();
-    renderPresetButtons();
-    renderTabButtons();
-  } else {
-    renderTrackButtons();
-    renderTabButtons();
-  }
-  const scores = getScores();
-  updateStats(scores);
-  renderInstantFeedback(scores);
-  renderBadges(scores);
-  renderPanel(scores);
-}
+    <div class="grid cols-3">
+      <div class="card">
+        <h3 style="margin-top:0">A. 고교학점제 체크</h3>
+        <ul class="list">
+          <li>선택과목이 전공과 논리적으로 이어지는가</li>
+          <li>도전형 과목과 안정형 과목의 균형이 맞는가</li>
+          <li>학생이 선택 이유를 본인 말로 설명할 수 있는가</li>
+          <li>학년이 올라갈수록 심화 구조가 보이는가</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">B. 학생부 체크</h3>
+        <ul class="list">
+          <li>세특이 활동 나열형인지, 문제 해결·탐구 확장형인지</li>
+          <li>진로활동이 전공 탐색 수준을 넘어 심화 수준으로 갔는가</li>
+          <li>동아리·독서·창체가 같은 주제로 연결되는가</li>
+          <li>출결·행동특성·학교폭력 관련 리스크가 없는가</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">C. 전형 설계 체크</h3>
+        <ul class="list">
+          <li>주전형과 보조전형이 분리되어 있는가</li>
+          <li>수시 6장의 역할 분담이 되어 있는가</li>
+          <li>정시를 보험이 아니라 실제 대안으로 보는가</li>
+          <li>대학별 최저학력, 반영과목, 면접, 논술을 구분해서 보는가</li>
+        </ul>
+      </div>
+    </div>
 
-document.getElementById("gradeSelect").addEventListener("change", (e)=>{
-  state.grade = e.target.value;
-  updateAll(false);
-});
+    <div class="section-title">7. 활용 메모</div>
+    <div class="card">
+      <ul class="list">
+        <li>이 문서는 “학생 설명용”보다 “상담사 설계용”에 맞춰져 있습니다.</li>
+        <li>숫자는 작년 공개결과를 빠르게 비교하기 위한 벤치마크이며, 실제 지원 판단은 해당 연도 모집요강과 함께 해야 합니다.</li>
+        <li>명지대·가톨릭대(성심)·서경대·삼육대·경기대처럼 전형 구조 해석이 필요한 대학은, 상담 현장에서는 대학별 공개표준안 PDF와 병행해서 보는 것이 안전합니다.</li>
+      </ul>
+    </div>
 
-document.getElementById("gradeSelect").value = state.grade;
+    <div class="foot print-only">
+      본 문서는 단일 HTML 실행용으로 제작된 컨설팅 실무 자료입니다.
+    </div>
+  </div>
 
-renderTrackButtons();
-renderPresetButtons();
-renderDiagnosisForm();
-renderTabButtons();
-updateAll(false);
-</script>
+  <script>
+    const benchmarkData = [
+      {group:"서연고", university:"서울대학교", route:"수시 지역균형", major:"전 계열 공통", metric:"정량 컷 직접 비교보다 서류+면접 해석 우선", type:"structural", note:"수시 지역균형은 서류+면접, 수능최저 적용. 정시 지역균형은 수능 60 + 교과평가 40 구조."},
+      {group:"서연고", university:"연세대학교", route:"학생부종합(활동우수형)", major:"융합인문사회과학부", metric:"70% cut 1.80", type:"numeric", note:"상위권 학종 대표 표본. 인문계 학종도 1등급 후반대 형성."},
+      {group:"서연고", university:"연세대학교", route:"학생부종합(활동우수형)", major:"융합과학공학부", metric:"70% cut 1.72", type:"numeric", note:"이공계 상위권 학종 표본. 세특·과목 선택 해석 중요."},
+      {group:"서연고", university:"고려대학교", route:"학생부종합(학업우수형/활동우수형 공개표본)", major:"국어국문학과", metric:"70% cut 2.81", type:"numeric", note:"같은 대학 안에서도 모집단위별 편차가 큼."},
+      {group:"서연고", university:"고려대학교", route:"학생부종합(학업우수형/활동우수형 공개표본)", major:"중어중문학과", metric:"70% cut 2.41", type:"numeric", note:"인문계도 학과별 편차 존재."},
+      {group:"서연고", university:"고려대학교", route:"학생부종합(학업우수형/활동우수형 공개표본)", major:"영어영문학과", metric:"70% cut 1.87", type:"numeric", note:"상위권 인문 모집단위는 1등급 후반대."},
+      {group:"서연고", university:"고려대학교", route:"학생부종합(학업우수형/활동우수형 공개표본)", major:"노어노문학과", metric:"70% cut 1.91", type:"numeric", note:"전공별 컷 차이를 활용한 지원전략 설계 필요."},
+      {group:"서연고", university:"고려대학교", route:"논술전형", major:"전 계열 공통", metric:"2026학년도 신설 구조 확인", type:"structural", note:"논술 100% + 수능최저 해석이 중요. 고교학점제 내신 불안 학생의 보조전형 검토 가능."},
+
+      {group:"서성한", university:"성균관대학교", route:"학생부종합(융합형)", major:"경영학과", metric:"70% cut 3.08", type:"numeric", note:"상위권 대학도 학종 대표 표본이 3등급대까지 형성되는 사례 존재."},
+      {group:"서성한", university:"성균관대학교", route:"학생부종합(융합형)", major:"공학계열", metric:"70% cut 2.99", type:"numeric", note:"공학계열은 과목 선택·세특 맥락을 함께 봐야 함."},
+      {group:"서성한", university:"성균관대학교", route:"학생부종합(융합형)", major:"전자전기공학부", metric:"70% cut 2.30", type:"numeric", note:"인기 모집단위는 더 촘촘한 경쟁."},
+      {group:"서성한", university:"한양대학교", route:"학생부종합(서류형)", major:"건축공학부", metric:"70% cut 1.92", type:"numeric", note:"같은 공학 계열 내에서도 모집단위별 차이 큼."},
+      {group:"서성한", university:"한양대학교", route:"학생부종합(서류형)", major:"융합전자공학부", metric:"70% cut 2.90", type:"numeric", note:"학생부종합은 단순 등급보다 과목 선택 맥락 해석 필요."},
+      {group:"서성한", university:"한양대학교", route:"학생부종합(서류형)", major:"컴퓨터소프트웨어학부", metric:"70% cut 3.17", type:"numeric", note:"컴퓨터계열도 공개표본상 3등급대 사례가 존재."},
+
+      {group:"중경외시", university:"중앙대학교", route:"학생부종합(CAU융합형인재/공개표본)", major:"국어국문학과", metric:"70% cut 1.94", type:"numeric", note:"중앙대 상위 인문계 대표 표본."},
+      {group:"중경외시", university:"중앙대학교", route:"학생부종합(CAU융합형인재/공개표본)", major:"심리학과", metric:"70% cut 2.16", type:"numeric", note:"인문사회 인기학과는 2등급 초반대 형성."},
+      {group:"중경외시", university:"중앙대학교", route:"학생부종합(CAU융합형인재/공개표본)", major:"미디어커뮤니케이션학부", metric:"70% cut 2.73", type:"numeric", note:"미디어계열 수요가 높아도 2등급 후반대 표본 확인."},
+      {group:"중경외시", university:"중앙대학교", route:"학생부종합(CAU융합형인재/공개표본)", major:"영어영문학과", metric:"70% cut 3.44", type:"numeric", note:"학과별 편차를 활용하면 지원조합 설계 가능."},
+
+      {group:"국숭세단", university:"국민대학교", route:"학생부종합(국민프런티어/공개표본)", major:"정보보안암호수학과", metric:"70% cut 2.71", type:"numeric", note:"IT·보안 계열은 상대적으로 상향 형성."},
+      {group:"국숭세단", university:"국민대학교", route:"학생부종합(국민프런티어/공개표본)", major:"건축학부[자연]", metric:"70% cut 2.35", type:"numeric", note:"건축/공학군은 선택과목 맥락 중요."},
+      {group:"국숭세단", university:"단국대학교", route:"학생부종합(DKU인재/공개표본)", major:"컴퓨터공학과", metric:"70% cut 2.38", type:"numeric", note:"단국대 컴공은 국숭세단 내에서도 경쟁력 높게 볼 수 있음."},
+      {group:"국숭세단", university:"단국대학교", route:"학생부종합(DKU인재/공개표본)", major:"소프트웨어학과", metric:"70% cut 3.11", type:"numeric", note:"동일 계열 내 서열보다 모집단위별 공개표본 차이 확인이 중요."},
+      {group:"국숭세단", university:"단국대학교", route:"학생부종합(DKU인재/공개표본)", major:"통계데이터사이언스학과", metric:"70% cut 2.83", type:"numeric", note:"데이터 계열 상담 시 수학 경쟁력 점검 필요."},
+
+      {group:"광명상가", university:"광운대학교", route:"학생부종합(광운참빛인재/공개표본)", major:"국제학부", metric:"70% cut 2.94", type:"numeric", note:"광명상가에서도 2등급 후반대 전공 확인."},
+      {group:"광명상가", university:"광운대학교", route:"학생부종합(광운참빛인재/공개표본)", major:"경영학부", metric:"70% cut 4.10", type:"numeric", note:"대학군 내 전형·학과별 편차가 매우 큼."},
+      {group:"광명상가", university:"광운대학교", route:"학생부종합(소프트웨어우수인재)", major:"소프트웨어학부", metric:"70% cut 3.19", type:"numeric", note:"특성화 전형 성격을 별도로 봐야 함."},
+      {group:"광명상가", university:"상명대학교", route:"학생부종합(상명인재/공개표본)", major:"의류학전공", metric:"70% cut 3.04", type:"numeric", note:"실무상 3등급 초반대 상담군으로 자주 사용 가능."},
+      {group:"광명상가", university:"상명대학교", route:"학생부종합(상명인재/공개표본)", major:"식품영양학전공", metric:"70% cut 3.27", type:"numeric", note:"생활과학/보건 인접 계열 상담 시 참고."},
+      {group:"광명상가", university:"명지대학교", route:"학생부종합(명지인재서류/면접)", major:"전 계열 공통", metric:"서류형·면접형 분리 해석", type:"structural", note:"명지인재서류전형은 서류 100, 명지인재면접전형은 1단계 서류 후 2단계 면접 반영 구조."},
+      {group:"광명상가", university:"가톨릭대학교(성심)", route:"전형 공개표준안", major:"전 계열 공통", metric:"대학별 PDF 병행 확인 권장", type:"structural", note:"공식 공개자료 기준 세부 모집단위 수치 확인 후 업데이트 추천."},
+
+      {group:"한서삼", university:"한성대학교", route:"학생부종합(한성인재/공개표본)", major:"크리에이티브인문학부", metric:"70% cut 3.42", type:"numeric", note:"서류평가 100% 전형의 참고용 교과등급이라는 점을 함께 안내해야 함."},
+      {group:"한서삼", university:"한성대학교", route:"학생부종합(한성인재/공개표본)", major:"미래융합사회과학대학", metric:"70% cut 3.27", type:"numeric", note:"한서삼권 상담에서 자주 쓰는 안정군 표본."},
+      {group:"한서삼", university:"서경대학교", route:"전형 공개표준안", major:"전 계열 공통", metric:"대학별 PDF 병행 확인 권장", type:"structural", note:"실기·예체능 계열 비중과 일반학과를 분리해 상담해야 함."},
+      {group:"한서삼", university:"삼육대학교", route:"전형 공개표준안", major:"전 계열 공통", metric:"대학별 PDF 병행 확인 권장", type:"structural", note:"약학/보건·일반 인문사회·자연계열을 분리해 판단해야 함."},
+
+      {group:"인가경", university:"인천대학교", route:"학생부교과(교과성적우수자)", major:"국어국문학과", metric:"70% cut 3.13", type:"numeric", note:"인가경 교과전형 상담의 대표 표본."},
+      {group:"인가경", university:"인천대학교", route:"학생부교과(교과성적우수자)", major:"영어영문학과", metric:"70% cut 2.90", type:"numeric", note:"문과 상향·적정 경계선 판단에 활용 가능."},
+      {group:"인가경", university:"인천대학교", route:"학생부교과(교과성적우수자)", major:"수학과", metric:"70% cut 2.98", type:"numeric", note:"자연계 교과도 2등급 후반대 표본 확인."},
+      {group:"인가경", university:"가천대학교", route:"학생부종합(가천바람개비)", major:"심리학과", metric:"70% cut 3.65", type:"numeric", note:"학종이지만 3등급대 중후반 공개표본 존재."},
+      {group:"인가경", university:"가천대학교", route:"학생부종합(가천바람개비)", major:"미디어커뮤니케이션학과", metric:"70% cut 3.97", type:"numeric", note:"전공별 경쟁력 해석 필요."},
+      {group:"인가경", university:"가천대학교", route:"학생부종합(가천의약학)", major:"약학과", metric:"70% cut 2.69", type:"numeric", note:"의약학 계열은 별도 군으로 봐야 함."},
+      {group:"인가경", university:"가천대학교", route:"학생부종합(가천의약학)", major:"의예과", metric:"70% cut 2.16", type:"numeric", note:"고교학점제 하에서도 의약학은 높은 성취도 유지가 전제."},
+      {group:"인가경", university:"경기대학교", route:"학생부교과/종합", major:"전 계열 공통", metric:"2026학년도 학생부 환산점수 반영 변경", type:"structural", note:"학교폭력 반영과 함께 환산점수 방식 변화 해석이 필요. 정량 컷만으로 판단 위험."},
+      {group:"인가경", university:"인하대학교", route:"학생부종합(인하미래인재/공개표본)", major:"화학공학과", metric:"70% cut 2.44", type:"numeric", note:"인천권 상위 자연계 표본으로 활용 가능."},
+      {group:"인가경", university:"인하대학교", route:"학생부종합(인하미래인재/공개표본)", major:"항공우주공학과", metric:"70% cut 2.74", type:"numeric", note:"공학계열 중 선호도 높은 전공."},
+      {group:"인가경", university:"인하대학교", route:"학생부종합(인하미래인재/공개표본)", major:"산업경영공학과", metric:"70% cut 3.29", type:"numeric", note:"인가경권 자연계 적정군 판단에 유용."}
+    ];
+
+    const groups = [...new Set(benchmarkData.map(v=>v.group))];
+    const routes = [...new Set(benchmarkData.map(v=>v.route))];
+    const groupFilter = document.getElementById('groupFilter');
+    const routeFilter = document.getElementById('routeFilter');
+
+    groups.forEach(g=>{
+      const op=document.createElement('option');
+      op.value=g; op.textContent=g;
+      groupFilter.appendChild(op);
+    });
+    routes.forEach(r=>{
+      const op=document.createElement('option');
+      op.value=r; op.textContent=r;
+      routeFilter.appendChild(op);
+    });
+
+    function renderTable(){
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      const g = document.getElementById('groupFilter').value;
+      const r = document.getElementById('routeFilter').value;
+      const t = document.getElementById('typeFilter').value;
+      const body = document.getElementById('benchmarkBody');
+
+      const rows = benchmarkData.filter(item=>{
+        const text = `${item.group} ${item.university} ${item.route} ${item.major} ${item.metric} ${item.note}`.toLowerCase();
+        if(q && !text.includes(q)) return false;
+        if(g && item.group !== g) return false;
+        if(r && item.route !== r) return false;
+        if(t && item.type !== t) return false;
+        return true;
+      });
+
+      body.innerHTML = rows.map(item=>`
+        <tr>
+          <td>${item.group}</td>
+          <td><b>${item.university}</b></td>
+          <td>${item.route}</td>
+          <td>${item.major}</td>
+          <td>${item.type==="numeric" ? `<span class="badge blue">정량 표본</span> ${item.metric}` : `<span class="badge orange">구조 해석</span> ${item.metric}`}</td>
+          <td>${item.note}</td>
+        </tr>
+      `).join('');
+
+      if(!rows.length){
+        body.innerHTML = `<tr><td colspan="6" class="muted">조건에 맞는 데이터가 없습니다.</td></tr>`;
+      }
+    }
+
+    ['searchInput','groupFilter','routeFilter','typeFilter'].forEach(id=>{
+      document.getElementById(id).addEventListener('input', renderTable);
+      document.getElementById(id).addEventListener('change', renderTable);
+    });
+    renderTable();
+
+    function scrollToId(id){
+      document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    function generatePlan(){
+      const grade = document.getElementById('grade').value;
+      const track = document.getElementById('track').value;
+      const gpa = document.getElementById('gpaBand').value;
+      const csat = document.getElementById('csat').value;
+      const recordDepth = document.getElementById('recordDepth').value;
+      const subjectFit = document.getElementById('subjectFit').value;
+      const interview = document.getElementById('interview').value;
+      const risk = document.getElementById('risk').value;
+      const memo = document.getElementById('memo').value.trim();
+
+      const priorities = [];
+      const warnings = [];
+      const actions = [];
+      const groupNotes = [];
+
+      // 전형 우선순위
+      if(["1.0~1.7","1.8~2.3"].includes(gpa) && recordDepth === "강함" && subjectFit !== "낮음"){
+        priorities.push("학생부종합 상향 검토");
+      }
+      if(["1.0~1.7","1.8~2.3","2.4~2.9"].includes(gpa)){
+        priorities.push("학생부교과 적정 검토");
+      }
+      if(csat === "강함"){
+        priorities.push("정시 비중 확대");
+      }
+      if(interview === "강함" && recordDepth !== "약함"){
+        priorities.push("면접형 학종 병행");
+      }
+      if(csat !== "약함" && ["2.4~2.9","3.0~3.6","3.7~4.4"].includes(gpa)){
+        priorities.push("논술/수능최저형 보조전형 검토");
+      }
+      if(priorities.length===0){
+        priorities.push("교과·정시 병행형 재설계");
+      }
+
+      // 경고
+      if(subjectFit === "낮음") warnings.push("고교학점제 선택과목과 희망 전공의 연결성이 약합니다. 과목 선택 이유를 설명할 수 있도록 재구성해야 합니다.");
+      if(recordDepth === "약함") warnings.push("세특·탐구의 깊이가 부족해 학종 경쟁력이 떨어질 수 있습니다.");
+      if(risk === "높음") warnings.push("출결·생활기록·학교생활 리스크를 먼저 정리해야 합니다.");
+      if(grade === "고1") warnings.push("현 고1은 2028 체제 적용 대상이므로 내신 5등급 체제와 과목 선택 설계를 동시에 봐야 합니다.");
+      if(grade === "고3" && csat === "약함" && gpa.startsWith("3.")) warnings.push("고3인데 정시 대안이 약합니다. 수시 지원 조합을 더 보수적으로 짜야 합니다.");
+
+      // 액션
+      if(track === "공학/컴퓨터"){
+        actions.push("수학·과학·정보 계열 과목의 흐름을 점검하고, 세특에 문제 해결형 탐구 흔적을 남기도록 지도합니다.");
+        groupNotes.push("국숭세단·인가경에서는 컴공/보안/데이터 계열이 상대적으로 상향 형성되는 경우가 많습니다.");
+      } else if(track === "인문사회"){
+        actions.push("국어·사회·독서·토론·글쓰기 흐름을 묶어 학생부 서사를 만듭니다.");
+        groupNotes.push("서연고·중경외시권 인문계는 같은 대학 안에서도 학과별 70%컷 편차가 큽니다.");
+      } else if(track === "상경"){
+        actions.push("수학 경쟁력과 경제·사회 데이터 해석 경험을 함께 설계합니다.");
+        groupNotes.push("경영·상경은 상위권과 중상위권 모두 선호도가 높아 교과·학종 해석을 분리해야 합니다.");
+      } else if(track === "자연과학"){
+        actions.push("과학 심화와 수학 기반을 같이 관리하고, 탐구 기록을 실험·분석 중심으로 정리합니다.");
+        groupNotes.push("자연계는 전공 선택과목의 흐름이 학종 해석에 중요합니다.");
+      } else if(track === "의약학"){
+        actions.push("높은 성취도 유지가 전제이며, 과학 심화·꾸준한 학업 태도·리스크 관리가 핵심입니다.");
+        groupNotes.push("의약학계열은 일반 대학군 표본과 별도 군으로 해석해야 합니다.");
+      } else {
+        actions.push("콘텐츠 제작·분석·표현 능력이 기록으로 남도록 세특·활동을 구조화합니다.");
+        groupNotes.push("미디어·콘텐츠 계열은 학과별 경쟁률과 학종 해석 차이가 큽니다.");
+      }
+
+      if(grade === "고1"){
+        actions.push("고1은 과목 선택의 이유를 먼저 세우고, 고2 선택과목을 미리 역산합니다.");
+      } else if(grade === "고2"){
+        actions.push("지금까지의 선택과목과 학생부 흐름이 맞지 않으면 이번 학기부터라도 서사를 재정렬합니다.");
+      } else if(grade === "고3"){
+        actions.push("수시 6장의 역할을 상향 2 / 적정 2 / 안정 2처럼 기능별로 나누어 설계합니다.");
+      } else if(grade === "N수"){
+        actions.push("학생부 보완이 어렵다면 정시와 논술 등 시험형 전형의 효율을 우선 검토합니다.");
+      }
+
+      const result = `
+        <h3 style="margin-top:0">상담 결과 초안</h3>
+        <div class="badge blue">우선 전형</div>
+        <div>${priorities.map(v=>`<div style="margin:6px 0">• ${v}</div>`).join('')}</div>
+
+        <div style="margin-top:14px" class="badge green">핵심 액션</div>
+        <div>${actions.map(v=>`<div style="margin:6px 0">• ${v}</div>`).join('')}</div>
+
+        <div style="margin-top:14px" class="badge orange">대학군 해석</div>
+        <div>${groupNotes.map(v=>`<div style="margin:6px 0">• ${v}</div>`).join('')}</div>
+
+        <div style="margin-top:14px" class="badge red">주의사항</div>
+        <div>${(warnings.length ? warnings : ["• 현재 입력값만으로는 치명적 경고는 적지만, 실제 판단 전 학생부 원문과 대학별 모집요강 확인이 필요합니다."]).map(v=>`<div style="margin:6px 0">${v.startsWith("•")?v:`• ${v}`}</div>`).join('')}</div>
+
+        <div style="margin-top:14px" class="callout">
+          <b>상담 메모 요약</b><br>
+          학년: ${grade} / 희망계열: ${track} / 내신: ${gpa} / 수능경쟁력: ${csat} / 세특깊이: ${recordDepth} / 과목일관성: ${subjectFit} / 면접: ${interview} / 생활리스크: ${risk}
+          ${memo ? `<br><br><b>추가 메모</b><br>${memo.replace(/\n/g,'<br>')}` : ""}
+        </div>
+      `;
+      document.getElementById('planResult').innerHTML = result;
+    }
+
+    function copyPlan(){
+      const text = document.getElementById('planResult').innerText;
+      navigator.clipboard.writeText(text).then(()=>{
+        alert('상담 결과 초안을 복사했습니다.');
+      });
+    }
+  </script>
 </body>
 </html>
